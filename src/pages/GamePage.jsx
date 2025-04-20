@@ -4,9 +4,9 @@ import { usePageContext  } from "../context/PageContext";
 
 export const GamePage = () => {
   const { difficulty } = usePageContext();
-  const wordCount = difficulty === 'Easy' ? 5 :
-                    difficulty === 'Medium' ? 8 :
-                    difficulty === 'Hard' ? 12 : 5;
+  const wordCount = difficulty === 'Easy' ? 4 :
+                    difficulty === 'Medium' ? 7 :
+                    difficulty === 'Hard' ? 11 : 4;
   const { chainedWords, generateChain } = useChainingWords(wordCount);
 
   const [guess, setGuess] = useState('');
