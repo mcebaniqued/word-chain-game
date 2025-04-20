@@ -40,10 +40,6 @@ export const GamePage = () => {
     generateChain();
   }, []);
 
-  useEffect(() => {
-    console.log(chainedWords)
-  }, [chainedWords])
-
   return (
     <div className='flex flex-col w-full h-full items-center justify-center gap-6'>
       <div className='flex flex-col gap-4 w-full items-center justify-center'>

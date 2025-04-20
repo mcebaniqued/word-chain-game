@@ -13,7 +13,6 @@ export const App = () => {
 
 const MainApp = () => {
   const { currentPage } = usePageContext();
-  console.log(currentPage)
 
   const renderPage = () => {
     switch (currentPage) {
