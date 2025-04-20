@@ -1,49 +1,87 @@
 import { useEffect, useState } from "react";
 import useChainingWords from "../hooks/useChainingWords";
-import { usePageContext  } from "../context/PageContext";
+import { usePageContext } from "../context/PageContext";
 
 export const GamePage = () => {
   const { difficulty } = usePageContext();
-  const wordCount = difficulty === 'Easy' ? 4 :
-                    difficulty === 'Medium' ? 7 :
-                    difficulty === 'Hard' ? 11 : 4;
+
+  const wordCount = difficulty === "Easy" ? 4 :
+                    difficulty === "Medium" ? 7 :
+                    difficulty === "Hard" ? 11 : 4;
+
   const { chainedWords, generateChain } = useChainingWords(wordCount);
 
   const [guess, setGuess] = useState('');
   const [currentIndex, setCurrentIndex] = useState(1);
   const [revealed, setRevealed] = useState([0]);
   const [feedback, setFeedback] = useState({});
-
-  const handleGuess = (e) => {
-    e.preventDefault();
-
-    const correct = guess.trim().toLowerCase() === chainedWords[currentIndex].toLowerCase();
-
-    if (correct) {
-      setFeedback((f) => ({ ...f, [currentIndex]: 'correct' }));
-      setTimeout(() => {
-        setRevealed((prev) => [...prev, currentIndex]);
-        setCurrentIndex((prev) => prev + 1);
-        setFeedback((f) => ({ ...f, [currentIndex]: null }));
-      }, 500);
-    } else {
-      setFeedback((f) => ({ ...f, [currentIndex]: 'wrong' }));
-      setTimeout(() => {
-        setFeedback((f) => ({ ...f, [currentIndex]: null }));
-      }, 500);
-    }
-
-    setGuess('');
-  };
+  const [incorrectGuesses, setIncorrectGuesses] = useState(0);
+  const [revealedLetters, setRevealedLetters] = useState({}); // { [index]: Set<number> }
 
   useEffect(() => {
     generateChain();
   }, []);
 
+  const handleGuess = (e) => {
+    e.preventDefault();
+    const normalizedGuess = guess.trim().toLowerCase();
+    const currentWord = chainedWords[currentIndex]?.toLowerCase();
+    const isCorrect = normalizedGuess === currentWord;
+
+    if (isCorrect) {
+      setFeedback((f) => ({ ...f, [currentIndex]: 'correct' }));
+
+      setTimeout(() => {
+        setRevealed((prev) => [...prev, currentIndex]);
+        setCurrentIndex((prev) => prev + 1);
+        setIncorrectGuesses(0);
+        setFeedback((f) => ({ ...f, [currentIndex]: null }));
+      }, 500);
+    } else {
+      setFeedback((f) => ({ ...f, [currentIndex]: 'wrong' }));
+
+      setTimeout(() => {
+        setFeedback((f) => ({ ...f, [currentIndex]: null }));
+      }, 500);
+
+      setIncorrectGuesses((prev) => {
+        const newCount = prev + 1;
+
+        // If 3 incorrect guesses, reveal a letter
+        if (newCount === 3) {
+          const word = chainedWords[currentIndex];
+          const currentSet = revealedLetters[currentIndex] || new Set();
+
+          const hiddenIndices = [...word]
+            .map((_, i) => i)
+            .filter(i => !currentSet.has(i));
+
+          // Only reveal if more than one letter remains hidden
+          if (hiddenIndices.length > 1) {
+            const randomIndex = hiddenIndices[Math.floor(Math.random() * hiddenIndices.length)];
+            const newSet = new Set(currentSet);
+            newSet.add(randomIndex);
+
+            setRevealedLetters((prevMap) => ({
+              ...prevMap,
+              [currentIndex]: newSet
+            }));
+          }
+
+          return 0; // reset after hint
+        }
+
+        return newCount;
+      });
+    }
+
+    setGuess('');
+  };
+
   return (
-    <div className='flex flex-col w-full h-full items-center justify-center gap-6'>
-      <div className='flex flex-col gap-4 w-full items-center justify-center'>
-        <h1 className='text-2xl'>Guess the next word:</h1>
+    <div className="flex flex-col w-full h-full items-center justify-center gap-6">
+      <div className="flex flex-col gap-4 w-full items-center justify-center">
+        <h1 className="text-2xl">Guess the next word:</h1>
         <form onSubmit={handleGuess}>
           <input
             value={guess}
@@ -54,13 +92,20 @@ export const GamePage = () => {
           />
         </form>
       </div>
-      {chainedWords.map((word, index) => {
-        const isRevealed = revealed.includes(index);
-        const animationState = feedback[index];
 
-        let displayWord = isRevealed
-          ? word
-          : word[0] + ' _'.repeat(word.length - 1);
+      {chainedWords.map((word, index) => {
+        const isFullyRevealed = revealed.includes(index);
+        const animationState = feedback[index];
+        const revealedSet = revealedLetters[index] || new Set();
+
+        const displayWord = word
+          .split('')
+          .map((char, i) =>
+            isFullyRevealed || revealedSet.has(i)
+              ? char
+              : i === 0 ? char : '_'
+          )
+          .join(' ');
 
         const baseClasses = "text-2xl font-mono block transition-colors duration-500";
         const feedbackClass = animationState === 'correct'
@@ -70,14 +115,11 @@ export const GamePage = () => {
           : '';
 
         return (
-          <span
-            key={index}
-            className={`${baseClasses} ${feedbackClass}`}
-          >
+          <span key={index} className={`${baseClasses} ${feedbackClass}`}>
             {displayWord}
           </span>
         );
       })}
     </div>
-  )
+  );
 };
