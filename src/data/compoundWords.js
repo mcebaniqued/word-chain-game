@@ -104,10 +104,7 @@ export const compoundWords = [
   { first: 'frame', second: 'rate' },
   { first: 'work', second: 'shop' },
   { first: 'work', second: 'out' },
-  { first: 'shop', second: 'assistant' },
-  { first: 'shop', second: 'floor' },
   { first: 'assistant', second: 'manager' },
-  { first: 'assistant', second: 'work' },
   { first: 'manager', second: 'meeting' },
   { first: 'manager', second: 'review' },
   { first: 'meeting', second: 'room' },
@@ -171,7 +168,6 @@ export const compoundWords = [
   { first: 'brain', second: 'storm' },
   { first: 'butter', second: 'fly' },
   { first: 'can', second: 'not' },
-  { first: 'car', second: 'pet' },
   { first: 'cat', second: 'fish' },
   { first: 'day', second: 'dream' },
   { first: 'dog', second: 'house' },
@@ -1027,10 +1023,6 @@ export const compoundWords = [
     "second": "sore"
   },
   {
-    "first": "cold",
-    "second": "hearted"
-  },
-  {
     "first": "come",
     "second": "about"
   },
@@ -1380,19 +1372,7 @@ export const compoundWords = [
   },
   {
     "first": "down",
-    "second": "home"
-  },
-  {
-    "first": "down",
-    "second": "burst"
-  },
-  {
-    "first": "down",
     "second": "cast"
-  },
-  {
-    "first": "down",
-    "second": "draft"
   },
   {
     "first": "down",
@@ -1401,10 +1381,6 @@ export const compoundWords = [
   {
     "first": "down",
     "second": "hill"
-  },
-  {
-    "first": "down",
-    "second": "link"
   },
   {
     "first": "down",
@@ -1420,19 +1396,7 @@ export const compoundWords = [
   },
   {
     "first": "down",
-    "second": "rate"
-  },
-  {
-    "first": "down",
     "second": "right"
-  },
-  {
-    "first": "down",
-    "second": "scale"
-  },
-  {
-    "first": "down",
-    "second": "shift"
   },
   {
     "first": "down",
@@ -1452,19 +1416,11 @@ export const compoundWords = [
   },
   {
     "first": "down",
-    "second": "throw"
-  },
-  {
-    "first": "down",
     "second": "town"
   },
   {
     "first": "down",
     "second": "trodden"
-  },
-  {
-    "first": "down",
-    "second": "turn"
   },
   {
     "first": "down",
@@ -1756,7 +1712,7 @@ export const compoundWords = [
   },
   {
     "first": "far",
-    "second": "sighted"
+    "second": "sight"
   },
   {
     "first": "fast",
@@ -2360,10 +2316,6 @@ export const compoundWords = [
   },
   {
     "first": "half",
-    "second": "hearted"
-  },
-  {
-    "first": "half",
     "second": "way"
   },
   {
@@ -2473,10 +2425,6 @@ export const compoundWords = [
   {
     "first": "hard",
     "second": "headed"
-  },
-  {
-    "first": "hard",
-    "second": "hearted"
   },
   {
     "first": "hard",
@@ -2691,8 +2639,8 @@ export const compoundWords = [
     "second": "way"
   },
   {
-    "first": "high",
-    "second": "wayman"
+    "first": "highway",
+    "second": "man"
   },
   {
     "first": "hill",
@@ -2781,14 +2729,6 @@ export const compoundWords = [
   {
     "first": "horse",
     "second": "fly"
-  },
-  {
-    "first": "horse",
-    "second": "laugh"
-  },
-  {
-    "first": "horse",
-    "second": "man"
   },
   {
     "first": "horse",
@@ -3084,7 +3024,7 @@ export const compoundWords = [
   },
   {
     "first": "kind",
-    "second": "hearted"
+    "second": "heart"
   },
   {
     "first": "king",
@@ -3217,10 +3157,6 @@ export const compoundWords = [
   {
     "first": "light",
     "second": "headed"
-  },
-  {
-    "first": "light",
-    "second": "hearted"
   },
   {
     "first": "light",
@@ -4273,10 +4209,6 @@ export const compoundWords = [
   {
     "first": "passage",
     "second": "way"
-  },
-  {
-    "first": "pass",
-    "second": "book"
   },
   {
     "first": "passer",
@@ -6107,6 +6039,14 @@ export const compoundWords = [
     "second": "down"
   },
   {
+    "first": "touch",
+    "second": "screen"
+  },
+  {
+    "first": "track",
+    "second": "star"
+  },
+  {
     "first": "trade",
     "second": "mark"
   },
@@ -6321,10 +6261,6 @@ export const compoundWords = [
   {
     "first": "up",
     "second": "load"
-  },
-  {
-    "first": "up",
-    "second": "on"
   },
   {
     "first": "upper",
@@ -6576,11 +6512,7 @@ export const compoundWords = [
   },
   {
     "first": "weight",
-    "second": "lifter"
-  },
-  {
-    "first": "weight",
-    "second": "lifting"
+    "second": "lift"
   },
   {
     "first": "well",
@@ -6665,10 +6597,6 @@ export const compoundWords = [
   {
     "first": "who",
     "second": "ever"
-  },
-  {
-    "first": "whole",
-    "second": "hearted"
   },
   {
     "first": "whole",
@@ -6929,5 +6857,9 @@ export const compoundWords = [
   {
     "first": "zoo",
     "second": "keeper"
-  }
+  },
+  {
+    "first": "pool",
+    "second": "table"
+  },
 ];
