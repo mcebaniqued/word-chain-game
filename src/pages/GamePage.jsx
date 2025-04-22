@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useChainingWords from "../hooks/useChainingWords";
 import { usePageContext } from "../context/PageContext";
+import { revealLetter } from "../utils/revealLetter";
 
 export const GamePage = () => {
   const { difficulty } = usePageContext();
@@ -50,24 +51,8 @@ export const GamePage = () => {
         // If 3 incorrect guesses, reveal a letter
         if (newCount === 3) {
           const word = chainedWords[currentIndex];
-          const currentSet = revealedLetters[currentIndex] || new Set();
 
-          const hiddenIndices = [...word]
-            .map((_, i) => i)
-            .filter(i => !currentSet.has(i));
-
-          // Only reveal if more than one letter remains hidden
-          if (hiddenIndices.length > 1) {
-            const randomIndex = hiddenIndices[Math.floor(Math.random() * hiddenIndices.length)];
-            const newSet = new Set(currentSet);
-            newSet.add(randomIndex);
-
-            setRevealedLetters((prevMap) => ({
-              ...prevMap,
-              [currentIndex]: newSet
-            }));
-          }
-
+          revealLetter(word, currentIndex, revealedLetters, setRevealedLetters);
           return 0; // reset after hint
         }
 
