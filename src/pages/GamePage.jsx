@@ -4,7 +4,7 @@ import { usePageContext } from "../context/PageContext";
 import { revealLetter } from "../utils/revealLetter";
 
 export const GamePage = () => {
-  const { difficulty } = usePageContext();
+  const { difficulty, changePage } = usePageContext();
 
   const wordCount = difficulty === "Easy" ? 4 :
                     difficulty === "Medium" ? 7 :
@@ -17,7 +17,10 @@ export const GamePage = () => {
   const [revealed, setRevealed] = useState([0]);
   const [feedback, setFeedback] = useState({});
   const [incorrectGuesses, setIncorrectGuesses] = useState(0);
-  const [revealedLetters, setRevealedLetters] = useState({}); // { [index]: Set<number> }
+  const [revealedLetters, setRevealedLetters] = useState({});
+  const [hints, setHints] = useState(3);
+
+  const buttonStyle = 'text-xl px-4 py-2 rounded-lg border border-gray-300 hover:bg-neutral-800 transition-colors duration-300 cursor-pointer disabled:hover:bg-transparent disabled:opacity-50 disabled:cursor-not-allowed';
 
   useEffect(() => {
     generateChain();
@@ -63,6 +66,20 @@ export const GamePage = () => {
     setGuess('');
   };
 
+  const currentWord = chainedWords[currentIndex];
+  const revealedSet = revealedLetters[currentIndex] || new Set();
+  const hiddenIndices = currentWord
+    ? [...currentWord]
+        .map((_, i) => i)
+        .filter(i => i !== 0 && !revealedSet.has(i))
+    : [];
+
+  const isRevealDisabled =
+    hints <= 0 ||
+    currentIndex >= chainedWords.length ||
+    revealed.includes(currentIndex) ||
+    hiddenIndices.length <= 1;
+
   return (
     <div className="flex flex-col w-full h-full items-center justify-center gap-6">
       <div className="flex flex-col gap-4 w-full items-center justify-center">
@@ -105,6 +122,40 @@ export const GamePage = () => {
           </span>
         );
       })}
+
+      <div className='flex items-center justify-center gap-4 pt-8'>
+        <button
+          onClick={() => changePage('SelectDifficultyPage')}
+          className={buttonStyle}
+        >
+          Change difficulty
+        </button>
+        <button
+          onClick={() => {
+            setCurrentIndex(1);
+            setRevealed([0]);
+            setFeedback({});
+            setIncorrectGuesses(0);
+            setRevealedLetters({});
+            generateChain();
+          }}
+          className={buttonStyle}
+        >
+          Restart
+        </button>
+        <button
+          onClick={() => {
+            if (currentWord && hiddenIndices.length > 1) {
+              revealLetter(currentWord, currentIndex, revealedLetters, setRevealedLetters);
+              setHints((prev) => prev - 1);
+            }
+          }}
+          disabled={isRevealDisabled}
+          className={buttonStyle}
+        >
+          {`Reveal a letter (${hints})`}
+        </button>
+      </div>
     </div>
   );
 };
